@@ -1,8 +1,8 @@
 #include "filter_chain.hh"
 #include <fstream>
 
-int FilterChain::put_filter(WordFilter f) {
-	filters.push_back(f);
+void FilterChain::put_filter(WordFilter f) {
+	return filters.push_back(f);
 }
 
 WordFilter FilterChain::pop_filter() {
@@ -25,7 +25,7 @@ void FilterChain::process(ostream &out) {
 		int filter_num;
 		int filter_size = filters.size();
 
-		/* 	apply filter on line, 
+		/* 	apply filter on line,
 			if line is empty == filtered from result,
 			so break
 		*/
@@ -57,10 +57,10 @@ int FilterChain::deserialize(string filename) {
 
 int FilterChain::serialize(string filename) {
 	ofstream ofs(filename.c_str(), ios::binary);
-	
+
 	if(!ofs)
 		return -1;
-	
+
 	process(ofs);
 	return 0;
 }

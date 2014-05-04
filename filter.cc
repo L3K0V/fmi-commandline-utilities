@@ -1,4 +1,4 @@
-#include "word_filter.hh"
+#include "filter.hh"
 
 WordFilter::WordFilter(string word) : word(word){}
 

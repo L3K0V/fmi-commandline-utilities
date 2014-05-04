@@ -1,7 +1,7 @@
 #ifndef __FILTER_CHAIN__
 #define __FILTER_CHAIN__
 
-#include "word_filter.hh"
+#include "filter.hh"
 #include <iostream>
 
 using namespace std;
@@ -10,8 +10,8 @@ class FilterChain {
 private:
 	vector<WordFilter> filters;
 	vector<string> data;
-	ostream &_output;
 	istream &_input;
+	ostream &_output;
 	void process(ostream &output);
 public:
 	FilterChain(istream &input, ostream &output) : _input(input), _output(output) {
@@ -24,7 +24,7 @@ public:
 		}
 	}
 
-	int put_filter(WordFilter filter);
+	void put_filter(WordFilter filter);
 	WordFilter pop_filter();
 	void filter();
 	int serialize(string filename);
