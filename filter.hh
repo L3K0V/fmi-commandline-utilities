@@ -11,8 +11,8 @@ class WordFilter {
 private:
 	string word;
 public:
-	WordFilter(string);
-	string apply(string);
+	WordFilter(const string&);
+	string apply(const string&);
 };
 
 #endif

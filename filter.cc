@@ -1,8 +1,8 @@
 #include "filter.hh"
 
-WordFilter::WordFilter(string word) : word(word){}
+WordFilter::WordFilter(const string &word) : word(word){}
 
 // return empty string for filtered line
-string WordFilter::apply(string line) {
-	return string(line.find(word) == string::npos ? "" : line);
+string WordFilter::apply(const string &line) {
+	return line.find(word) == string::npos ? "" : line;
 }

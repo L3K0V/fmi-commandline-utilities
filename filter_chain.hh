@@ -14,7 +14,7 @@ private:
 	ostream &_output;
 	void process(ostream &output);
 public:
-	FilterChain(istream &input, ostream &output) : _input(input), _output(output) {
+	FilterChain(istream &input,ostream &output) : _input(input), _output(output) {
 		string line;
 
 		// cache input for future processing
@@ -24,11 +24,11 @@ public:
 		}
 	}
 
-	void put_filter(WordFilter filter);
+	void put_filter(const WordFilter &filter);
 	WordFilter pop_filter();
 	void filter();
-	int serialize(string filename);
-	int deserialize(string filename);
+	int serialize(const string &filename);
+	int deserialize(const string &filename);
 };
 
 #endif

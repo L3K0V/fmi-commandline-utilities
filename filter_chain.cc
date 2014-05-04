@@ -1,7 +1,7 @@
 #include "filter_chain.hh"
 #include <fstream>
 
-void FilterChain::put_filter(WordFilter f) {
+void FilterChain::put_filter(const WordFilter &f) {
 	return filters.push_back(f);
 }
 
@@ -39,7 +39,7 @@ void FilterChain::process(ostream &out) {
 	}
 }
 
-int FilterChain::deserialize(string filename) {
+int FilterChain::deserialize(const string &filename) {
 	ifstream ifs(filename.c_str(), ios::binary);
 
 	if(!ifs)
@@ -55,7 +55,7 @@ int FilterChain::deserialize(string filename) {
 	return 1;
 }
 
-int FilterChain::serialize(string filename) {
+int FilterChain::serialize(const string &filename) {
 	ofstream ofs(filename.c_str(), ios::binary);
 
 	if(!ofs)
