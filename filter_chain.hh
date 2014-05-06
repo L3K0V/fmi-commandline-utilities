@@ -29,6 +29,14 @@ public:
 	void filter();
 	int serialize(const string &filename);
 	int deserialize(const string &filename);
+
+    bool operator==(const Filter &other) const;
+    bool operator!=(const Filter &other) const;
+    FilterChain& operator+=(const Filter &other);
+    FilterChain& operator+(const FilterChain &second);
+    FilterChain& operator|(const Filter &filter);
+    Filter& operator[](const int position);
+    Filter& operator[](const char* filtering);
 };
 
 FilterChain operator|(const Filter &first, const Filter &second);
