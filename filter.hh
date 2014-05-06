@@ -7,12 +7,23 @@
 
 using namespace std;
 
-class WordFilter {
+class Filter {
 private:
 	string word;
 public:
-	WordFilter(const string&);
+	Filter(const string&);
 	string apply(const string&);
+
+    /* OPERATORS OVERLOADING  */
+    bool operator==(const Filter &other) const;
+    bool operator!=(const Filter &other) const;
+    friend ostream& operator<<(ostream &os, const Filter &filter);
+    friend istream& operator>>(istream &is, Filter &filter);
+    Filter& operator+=(const char &c);
+    Filter& operator+=(const char* std);
 };
+
+ostream& operator<<(ostream &os, const Filter &filter);
+istream& operator>>(istream &is, Filter &filter);
 
 #endif

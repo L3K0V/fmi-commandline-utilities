@@ -8,7 +8,7 @@ using namespace std;
 
 class FilterChain {
 private:
-	vector<WordFilter> filters;
+	vector<Filter> filters;
 	vector<string> data;
 	istream &_input;
 	ostream &_output;
@@ -24,11 +24,13 @@ public:
 		}
 	}
 
-	void put_filter(const WordFilter &filter);
-	WordFilter pop_filter();
+	void put_filter(const Filter &filter);
+	Filter pop_filter();
 	void filter();
 	int serialize(const string &filename);
 	int deserialize(const string &filename);
 };
+
+FilterChain operator|(const Filter &first, const Filter &second);
 
 #endif

@@ -1,12 +1,12 @@
 #include "filter_chain.hh"
 #include <fstream>
 
-void FilterChain::put_filter(const WordFilter &f) {
+void FilterChain::put_filter(const Filter &f) {
 	return filters.push_back(f);
 }
 
-WordFilter FilterChain::pop_filter() {
-	WordFilter f(filters.back());
+Filter FilterChain::pop_filter() {
+	Filter f(filters.back());
 	filters.pop_back();
 	return f;
 }

@@ -5,9 +5,9 @@
 using namespace std;
 
 int main (int argc, char *argv[]) {
-	WordFilter hello("hello");
-	WordFilter f_chain("chain");
-	WordFilter world("world");
+	Filter hello("hello");
+	Filter f_chain("chain");
+	Filter world("world");
 
 	FilterChain chain(cin, cout);
 	chain.put_filter(hello);
