@@ -64,3 +64,19 @@ int FilterChain::serialize(const string &filename) {
 	process(ofs);
 	return 0;
 }
+
+bool FilterChain::operator==(const FilterChain &other) const {
+    unsigned elem, fil;
+
+    for (elem = 0; elem < other.filters.size(); elem++) {
+        for (fil = 0; fil < filters.size(); fil++) {
+            if (filters[fil] != other.filters[elem]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+bool FilterChain::operator!=(const FilterChain &other) const {
+    return !this->operator==(other);
+}

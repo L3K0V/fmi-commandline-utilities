@@ -21,9 +21,20 @@ int main (int argc, char *argv[]) {
     cout << "New filtering string = " << hello << endl;
 
 	FilterChain chain(cin, cout);
+    FilterChain chain2(cin, cout);
+
 	chain.put_filter(hello);
 	chain.put_filter(f_chain);
 	chain.put_filter(world);
+
+    cout << "Filter chains are eqals = " << (chain == chain2) << endl;
+
+    chain2.put_filter(hello);
+    chain2.put_filter(f_chain);
+    chain2.put_filter(world);
+
+    cout << "Filter chains are eqals = " << (chain == chain2) << endl;
+
     chain.filter();
 	// hello chained world
 }

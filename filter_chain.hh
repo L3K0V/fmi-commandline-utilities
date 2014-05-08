@@ -30,8 +30,8 @@ public:
 	int serialize(const string &filename);
 	int deserialize(const string &filename);
 
-    bool operator==(const Filter &other) const;
-    bool operator!=(const Filter &other) const;
+    bool operator==(const FilterChain &other) const;
+    bool operator!=(const FilterChain &other) const;
     FilterChain& operator+=(const Filter &other);
     FilterChain& operator+(const FilterChain &second);
     FilterChain& operator|(const Filter &filter);
