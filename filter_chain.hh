@@ -39,6 +39,7 @@ public:
     FilterChain& operator|(const Filter &filter);
     Filter& operator[](const int position);
     Filter& operator[](const char* filtering);
+    FilterChain& operator-=(const char* filtering);
 };
 
 FilterChain operator|(const Filter &first, const Filter &second);

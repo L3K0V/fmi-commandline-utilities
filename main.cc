@@ -8,8 +8,8 @@ int main (int argc, char *argv[]) {
     Filter world("world");
 
     FilterChain lotr(cin, cout);
-    //lotr += hobbit;
-    //lotr += world;
+    lotr += hobbit;
+    lotr += world;
 
     //lotr.filter();
 
@@ -18,4 +18,7 @@ int main (int argc, char *argv[]) {
 
     FilterChain lotrNew(lotr+lotrCopy);
     lotrNew.filter();
+
+    Filter f = lotr["world"];
+    cout << f << endl;
 }

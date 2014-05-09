@@ -13,6 +13,7 @@ private:
 public:
 	Filter(const string&);
 	string apply(const string&);
+    const char* get_word() { return word.c_str();}
 
     /* OPERATORS OVERLOADING  */
     bool operator==(const Filter &other) const;

@@ -1,5 +1,6 @@
 #include "filter_chain.hh"
 #include <fstream>
+#include <cstring>
 
 FilterChain::FilterChain(const FilterChain &other)
 : _input(other._input), _output(other._output), filters(other.filters), data(other.data) {}
@@ -139,5 +140,30 @@ FilterChain& FilterChain::operator|(const Filter &filter) {
 
 Filter& FilterChain::operator[](const int position) {
     return filters[position];
+    //FIXME: Throw exception if position is out of vector size
+}
+
+Filter& FilterChain::operator[](const char* filtering) {
+    unsigned elem;
+    for (elem = 0; elem < filters.size(); elem++) {
+        if(strcmp(filters[elem].get_word(), filtering)== 0) {
+            return filters[elem];
+        }
+    }
+    //FIXME: Throw exception if filter not found
+}
+
+FilterChain& FilterChain::operator-=(const char* filtering) {
+    unsigned elem;
+    for (elem = 0; elem < filters.size(); elem++) {
+        if(strcmp(filters[elem].get_word(), filtering) == 0) {
+            filters.erase(filters.begin()+elem);
+        }
+    }
+    return *this;
+}
+
+FilterChain operator|(const Filter &first, const Filter &second) {
+    //TODO: Implement
 }
 
