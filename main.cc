@@ -1,40 +1,21 @@
 #include <iostream>
 #include "filter.hh"
 #include "filter_chain.hh"
-
 using namespace std;
 
 int main (int argc, char *argv[]) {
-	Filter hello("hello");
-	Filter f_chain("chain");
-	Filter world("world");
+    Filter hobbit("hobbit");
+    Filter world("world");
 
-    cout << "Filtering string: = [" << hello << ", " << f_chain << ", " << world << "]"<< endl;
-    cout << "Filtering strings equals = " << (hello == f_chain) << endl;
-    cout << "Filtering strings equals = " << (hello == hello) << endl;
+    FilterChain lotr(cin, cout);
+    //lotr += hobbit;
+    //lotr += world;
 
-    // Testing chaining filters add
-    hello += 'o';
-    cout << "New filtering string = " << hello << endl;
+    //lotr.filter();
 
-    hello += " woorld";
-    cout << "New filtering string = " << hello << endl;
+    FilterChain lotrCopy(cin, cout);
+    lotrCopy += world;
 
-	FilterChain chain(cin, cout);
-    FilterChain chain2(cin, cout);
-
-	chain.put_filter(hello);
-	chain.put_filter(f_chain);
-	chain.put_filter(world);
-
-    cout << "Filter chains are eqals = " << (chain == chain2) << endl;
-
-    chain2.put_filter(hello);
-    chain2.put_filter(f_chain);
-    chain2.put_filter(world);
-
-    cout << "Filter chains are eqals = " << (chain == chain2) << endl;
-
-    chain.filter();
-	// hello chained world
+    FilterChain lotrNew(lotr+lotrCopy);
+    lotrNew.filter();
 }

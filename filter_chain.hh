@@ -8,11 +8,11 @@ using namespace std;
 
 class FilterChain {
 private:
-	vector<Filter> filters;
-	vector<string> data;
 	istream &_input;
 	ostream &_output;
-	void process(ostream &output);
+	vector<Filter> filters;
+	vector<string> data;
+void process(ostream &output);
 public:
 	FilterChain(istream &input,ostream &output) : _input(input), _output(output) {
 		string line;
@@ -24,6 +24,8 @@ public:
 		}
 	}
 
+    FilterChain(const FilterChain &other);
+
 	void put_filter(const Filter &filter);
 	Filter pop_filter();
 	void filter();
@@ -33,7 +35,7 @@ public:
     bool operator==(const FilterChain &other) const;
     bool operator!=(const FilterChain &other) const;
     FilterChain& operator+=(const Filter &other);
-    FilterChain& operator+(const FilterChain &second);
+    FilterChain operator+(const FilterChain &second);
     FilterChain& operator|(const Filter &filter);
     Filter& operator[](const int position);
     Filter& operator[](const char* filtering);
