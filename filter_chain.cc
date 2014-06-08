@@ -5,14 +5,18 @@
 FilterChain::FilterChain(const FilterChain &other)
 : _input(other._input), _output(other._output), filters(other.filters), data(other.data) {}
 
-void FilterChain::put_filter(const Filter &f) {
+FilterChain::~FilterChain() {
+    //while(!filters.empty()) delete filters.back(), filters.pop_back();
+}
+
+void FilterChain::put_filter(Filter* f) {
 	return filters.push_back(f);
 }
 
-Filter FilterChain::pop_filter() {
-	Filter f(filters.back());
+Filter* FilterChain::pop_filter() {
+    Filter* filter = filters.back();
 	filters.pop_back();
-	return f;
+	return filter;
 }
 
 void FilterChain::filter() {
@@ -34,7 +38,7 @@ void FilterChain::process(ostream &out) {
 			so break
 		*/
 		for(filter_num = 0; filter_num < filter_size; filter_num++) {
-			line = filters[filter_num].apply(line);
+			line = filters[filter_num]->apply(line);
 
 			if(line.empty()) break;
 		}
@@ -44,29 +48,13 @@ void FilterChain::process(ostream &out) {
 }
 
 int FilterChain::deserialize(const string &filename) {
-	ifstream ifs(filename.c_str(), ios::binary);
-
-	if(!ifs)
-		return -1;
-
-	data.clear();
-	string line;
-
-	while(!ifs.eof()) {
-		getline(ifs, line);
-		data.push_back(line);
-	}
-	return 1;
+    // TODO: Implement me
+	return -1;
 }
 
 int FilterChain::serialize(const string &filename) {
-	ofstream ofs(filename.c_str(), ios::binary);
-
-	if(!ofs)
-		return -1;
-
-	process(ofs);
-	return 0;
+    // TODO: Implement me
+	return -1;
 }
 
 bool FilterChain::operator==(const FilterChain &other) const {
@@ -109,7 +97,7 @@ bool FilterChain::operator!=(const FilterChain &other) const {
     return !this->operator==(other);
 }
 
-FilterChain& FilterChain::operator+=(const Filter &other) {
+FilterChain& FilterChain::operator+=(Filter *other) {
     filters.push_back(other);
     return *this;
 }
@@ -133,37 +121,41 @@ FilterChain FilterChain::operator+(const FilterChain &second) {
     return fresh;
 }
 
-FilterChain& FilterChain::operator|(const Filter &filter) {
-    this->operator+=(filter);
+FilterChain& FilterChain::operator|(Filter& filter) {
+    this->operator+=(&filter);
     return *this;
 }
 
-Filter& FilterChain::operator[](const int position) {
+Filter* FilterChain::operator[](const int position) const {
+    if(position > (int) filters.size()) throw FilterException();
     return filters[position];
-    //FIXME: Throw exception if position is out of vector size
 }
 
-Filter& FilterChain::operator[](const char* filtering) {
+Filter* FilterChain::operator[](const char* filtering) const {
     unsigned elem;
     for (elem = 0; elem < filters.size(); elem++) {
-        if(strcmp(filters[elem].get_word(), filtering)== 0) {
+        if(strcmp(filters[elem]->get_word(), filtering)== 0) {
             return filters[elem];
         }
     }
-    //FIXME: Throw exception if filter not found
+    throw FilterException();
 }
 
 FilterChain& FilterChain::operator-=(const char* filtering) {
     unsigned elem;
     for (elem = 0; elem < filters.size(); elem++) {
-        if(strcmp(filters[elem].get_word(), filtering) == 0) {
+        if(strcmp(filters[elem]->get_word(), filtering) == 0) {
             filters.erase(filters.begin()+elem);
         }
     }
     return *this;
 }
 
-FilterChain operator|(const Filter &first, const Filter &second) {
-    //TODO: Implement
+FilterChain operator|(Filter &first, Filter &second) {
+    FilterChain chained(cin, cout);
+    chained.operator+=(&first);
+    chained.operator+=(&second);
+    
+    return chained;
 }
 

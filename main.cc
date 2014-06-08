@@ -1,24 +1,28 @@
-#include <iostream>
+#include "filter_word.hh"
+#include "filter_capitalize.hh"
+#include "filter_encode.hh"
 #include "filter.hh"
 #include "filter_chain.hh"
+
+#include <iostream>
+
 using namespace std;
 
-int main (int argc, char *argv[]) {
-    Filter hobbit("hobbit");
-    Filter world("world");
+int main() {
 
-    FilterChain lotr(cin, cout);
-    lotr += hobbit;
-    lotr += world;
+    WordFilter hobbit("hobbit");
+    WordFilter world("world");
 
-    //lotr.filter();
+    EncodeDecodeFilter decode;
+    CapitalizeFilter capitalize;
 
-    FilterChain lotrCopy(cin, cout);
-    lotrCopy += world;
+    FilterChain lotr = hobbit | world;
+    lotr += &hobbit;
+    lotr += &world;
+    //lotr += &decode;
+    lotr += &capitalize;
+    
+    lotr.filter();
 
-    FilterChain lotrNew(lotr+lotrCopy);
-    lotrNew.filter();
-
-    Filter f = lotr["world"];
-    cout << f << endl;
+    return 0;
 }

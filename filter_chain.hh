@@ -3,6 +3,7 @@
 
 #include "filter.hh"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -10,9 +11,9 @@ class FilterChain {
 private:
 	istream &_input;
 	ostream &_output;
-	vector<Filter> filters;
+	vector<Filter*> filters;
 	vector<string> data;
-void process(ostream &output);
+    void process(ostream &output);
 public:
 	FilterChain(istream &input,ostream &output) : _input(input), _output(output) {
 		string line;
@@ -23,25 +24,27 @@ public:
 			data.push_back(line);
 		}
 	}
+	
+	~FilterChain();
 
     FilterChain(const FilterChain &other);
 
-	void put_filter(const Filter &filter);
-	Filter pop_filter();
+	void put_filter(Filter* filter);
+	Filter* pop_filter();
 	void filter();
 	int serialize(const string &filename);
 	int deserialize(const string &filename);
 
     bool operator==(const FilterChain &other) const;
     bool operator!=(const FilterChain &other) const;
-    FilterChain& operator+=(const Filter &other);
+    FilterChain& operator+=(Filter* other);
     FilterChain operator+(const FilterChain &second);
-    FilterChain& operator|(const Filter &filter);
-    Filter& operator[](const int position);
-    Filter& operator[](const char* filtering);
+    FilterChain& operator|(Filter& filter);
+    Filter* operator[](const int position) const;
+    Filter* operator[](const char* filtering) const;
     FilterChain& operator-=(const char* filtering);
 };
 
-FilterChain operator|(const Filter &first, const Filter &second);
+FilterChain operator|(Filter &first, Filter &second);
 
 #endif
