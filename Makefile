@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -std=c++11
 LDFLAGS=
 SOURCES=main.cc filter.cc filter_chain.cc filter_word.cc filter_capitalize.cc filter_encode.cc
 OBJECTS=$(SOURCES:.cc=.o)
