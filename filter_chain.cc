@@ -2,6 +2,10 @@
 #include <fstream>
 #include <cstring>
 
+#include "filter_word.hh"
+#include "filter_capitalize.hh"
+#include "filter_encode.hh"
+
 FilterChain::FilterChain(const FilterChain &other)
 : _input(other._input), _output(other._output), filters(other.filters), data(other.data) {}
 
@@ -47,13 +51,71 @@ void FilterChain::process(ostream &out) {
 	}
 }
 
-int FilterChain::deserialize(const string &filename) {
-    // TODO: Implement me
+int FilterChain::deserialize(ifstream &input) {
+    unsigned filter_size = 0, elem;
+    input.read(reinterpret_cast<char *>(&filter_size), sizeof(filter_size));
+    
+    
+    std::cerr << filter_size << std::endl;
+    for (elem = 0; elem < filter_size; elem++) {
+        char type = 0;
+        input.read(&type, sizeof(type));
+        
+        Filter* filter;
+        
+        switch(type) {
+            // Word filter
+            case 'W': {
+                unsigned size_to_read = 0;
+    
+                input.read(reinterpret_cast<char *>(&size_to_read), sizeof(size_to_read));
+    
+                char* buffer = new char[size_to_read+1];
+    
+                input.read(buffer, size_to_read);
+                std::cerr << size_to_read << std::endl;
+                buffer[size_to_read] = '\0';
+    
+                string word_to_read(buffer);
+                
+                delete [] buffer;
+                filter = new WordFilter(word_to_read);
+            }break;
+            // Encode/Decode
+            case 'E': {
+                int key;
+                input.read(reinterpret_cast<char *>(&key), sizeof(key));
+                
+                filter = new EncodeDecodeFilter(key);
+            }break;
+            // Capitalize
+            case 'C': {
+                filter = new CapitalizeFilter();
+            }break;
+        }
+        filters.push_back(filter);
+    }
+    
+    for (int e = 0; e < filters.size(); e++) {
+        WordFilter* wf = dynamic_cast<WordFilter*>(filters[e]);
+        std::cerr << *wf << std::endl;
+    }
+    std::cerr << filters.size() << std::endl;
+    
+    
+    
 	return -1;
 }
 
-int FilterChain::serialize(const string &filename) {
-    // TODO: Implement me
+int FilterChain::serialize(ofstream &output) {
+    unsigned size = filters.size();
+    output.write(reinterpret_cast<const char *>(&size), sizeof(size));
+    
+    unsigned elem;
+    for (elem = 0; elem < size; elem++) {
+        filters[elem]->serialize(output);
+    }
+    
 	return -1;
 }
 
@@ -153,8 +215,8 @@ FilterChain& FilterChain::operator-=(const char* filtering) {
 
 FilterChain operator|(Filter &first, Filter &second) {
     FilterChain chained(cin, cout);
-    chained.operator+=(&first);
-    chained.operator+=(&second);
+    chained+=(&first);
+    chained+=(&second);
     
     return chained;
 }

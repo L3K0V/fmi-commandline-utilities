@@ -14,10 +14,10 @@ string CapitalizeFilter::apply(const string& line) {
     return formated;
 }
 
-void CapitalizeFilter::serialize(const string filename) {
-
+void CapitalizeFilter::serialize(ofstream &output) {
+    output.write(reinterpret_cast<const char *>(&type_), sizeof(type_));
 }
 
-Filter* CapitalizeFilter::deserialize(const string filename) {
-
+Filter* CapitalizeFilter::deserialize(ifstream &input) {
+    return new CapitalizeFilter();
 }

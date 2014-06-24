@@ -32,8 +32,8 @@ public:
 	void put_filter(Filter* filter);
 	Filter* pop_filter();
 	void filter();
-	int serialize(const string &filename);
-	int deserialize(const string &filename);
+	int serialize(ofstream &output);
+	int deserialize(ifstream &input);
 
     bool operator==(const FilterChain &other) const;
     bool operator!=(const FilterChain &other) const;

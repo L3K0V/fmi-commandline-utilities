@@ -32,10 +32,14 @@ istream& operator>>(istream &is, WordFilter &filter) {
     return is;
 }
 
-void WordFilter::serialize(const string filename) {
-
+void WordFilter::serialize(ofstream &output) {
+    unsigned size = word.size();
+    
+    output.write(reinterpret_cast<const char *>(&type_), sizeof(type_));
+    output.write(reinterpret_cast<const char *>(&size), sizeof(size));
+    output.write(word.c_str(), size);
 }
 
-Filter* WordFilter::deserialize(const string filename) {
-
+Filter* WordFilter::deserialize(ifstream &input) {
+    
 }

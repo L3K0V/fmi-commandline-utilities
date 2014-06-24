@@ -5,15 +5,15 @@
 
 class EncodeDecodeFilter: public Filter {
 public:
-    EncodeDecodeFilter(int key):key_(key){};
+    EncodeDecodeFilter(int key):Filter('E'), key_(key){};
     
     // Random generated key for Caesar cipher
-    EncodeDecodeFilter():key_(7){};    
+    EncodeDecodeFilter():Filter('E'), key_(7) {};    
     
     // Encode and decode input string using Caesar cipher
     string apply(const string&);
-    void serialize(const string filename);
-    Filter* deserialize(const string filename);
+    void serialize(ofstream &output);
+    Filter* deserialize(ifstream &input);
 private:
     int key_;
 };

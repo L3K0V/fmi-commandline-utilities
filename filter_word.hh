@@ -5,10 +5,10 @@
 
 class WordFilter : public Filter {
 public:
-    WordFilter(const string word):word(word){};
+    WordFilter(const string& word):Filter('W'), word(word){};
     string apply(const string&);
-    void serialize(const string filename);
-    Filter* deserialize(const string filename);
+    void serialize(ofstream &output);
+    Filter* deserialize(ifstream &input);
     const char* get_word() { return word.c_str();}
     
      /* OPERATORS OVERLOADING  */

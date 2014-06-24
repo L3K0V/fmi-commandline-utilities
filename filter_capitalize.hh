@@ -5,10 +5,10 @@
 
 class CapitalizeFilter: public Filter {
 public:
-    CapitalizeFilter(){};
+    CapitalizeFilter():Filter('C'){};
     string apply(const string&);
-    void serialize(const string filename);
-    Filter* deserialize(const string filename);
+    void serialize(ofstream &output);
+    Filter* deserialize(ifstream &input);
 };
 
 #endif // __FILTER_C_H__

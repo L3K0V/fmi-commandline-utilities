@@ -17,12 +17,29 @@ int main() {
     CapitalizeFilter capitalize;
 
     FilterChain lotr = hobbit | world;
-    lotr += &hobbit;
-    lotr += &world;
+    //lotr += &hobbit;
+    //lotr += &world;
     //lotr += &decode;
-    lotr += &capitalize;
+    //lotr += &capitalize;
     
-    lotr.filter();
+    //lotr.filter();
+    
+    //ofstream ofs("ser.seri", ios::out | ios::binary);
+    
+    //if(ofs.is_open()) {
+        //lotr.serialize(ofs);
+    //}
+    
+    ifstream ifs("ser.seri", ios::in | ios::binary);
+    
+    if(ifs.is_open()) {
+        FilterChain lotr2(cin, cout);
+        lotr2.deserialize(ifs);
+    
+        lotr2.filter();
+    }
+    
+    
 
     return 0;
 }
