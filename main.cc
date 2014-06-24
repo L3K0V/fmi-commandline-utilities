@@ -11,7 +11,8 @@ using namespace std;
 void serialize_and_filter();
 void deserialize_and_filter();
 
-int main() {   
+int main(int argc, char *argv[]) {   
+    vector<string> allArgs(argv, argv + argc);
     
     //serialize_and_filter();
     deserialize_and_filter();
