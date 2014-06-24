@@ -15,6 +15,8 @@ $(EXECUTABLE): $(OBJECTS)
 
 clean:
 	rm *.o
+	rm *.seri
+	rm out*
 	rm $(EXECUTABLE)
 
 

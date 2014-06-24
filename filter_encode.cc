@@ -13,7 +13,3 @@ void EncodeDecodeFilter::serialize(ofstream &output) {
     output.write(reinterpret_cast<const char *>(&type_), sizeof(type_));
     output.write(reinterpret_cast<const char *>(&key_), sizeof(key_));
 }
-
-Filter* EncodeDecodeFilter::deserialize(ifstream &input) {
-
-}

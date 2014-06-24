@@ -17,7 +17,3 @@ string CapitalizeFilter::apply(const string& line) {
 void CapitalizeFilter::serialize(ofstream &output) {
     output.write(reinterpret_cast<const char *>(&type_), sizeof(type_));
 }
-
-Filter* CapitalizeFilter::deserialize(ifstream &input) {
-    return new CapitalizeFilter();
-}

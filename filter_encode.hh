@@ -13,7 +13,6 @@ public:
     // Encode and decode input string using Caesar cipher
     string apply(const string&);
     void serialize(ofstream &output);
-    Filter* deserialize(ifstream &input);
 private:
     int key_;
 };

@@ -39,7 +39,3 @@ void WordFilter::serialize(ofstream &output) {
     output.write(reinterpret_cast<const char *>(&size), sizeof(size));
     output.write(word.c_str(), size);
 }
-
-Filter* WordFilter::deserialize(ifstream &input) {
-    
-}

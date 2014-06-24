@@ -8,7 +8,6 @@ public:
     CapitalizeFilter():Filter('C'){};
     string apply(const string&);
     void serialize(ofstream &output);
-    Filter* deserialize(ifstream &input);
 };
 
 #endif // __FILTER_C_H__

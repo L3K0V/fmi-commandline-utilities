@@ -8,38 +8,45 @@
 
 using namespace std;
 
-int main() {
+void serialize_and_filter();
+void deserialize_and_filter();
 
-    WordFilter hobbit("hobbit");
-    WordFilter world("world");
+int main() {   
+    
+    //serialize_and_filter();
+    deserialize_and_filter();
+    
+    return 0;
+}
 
-    EncodeDecodeFilter decode;
-    CapitalizeFilter capitalize;
+void serialize_and_filter() {
+   WordFilter hobbit("hobbit");
+   WordFilter world("world");
+   EncodeDecodeFilter decode;
+   CapitalizeFilter capitalize;
+   
+   FilterChain lotr = hobbit | world | capitalize | decode;
+   
+   lotr.filter();
+    
+   ofstream ofs("ser.seri", ios::out | ios::binary);
+    
+   if(ofs.is_open()) {
+        lotr.serialize(ofs);
+   }
+   
+   ofs.close();
+}
 
-    FilterChain lotr = hobbit | world;
-    //lotr += &hobbit;
-    //lotr += &world;
-    //lotr += &decode;
-    //lotr += &capitalize;
-    
-    //lotr.filter();
-    
-    //ofstream ofs("ser.seri", ios::out | ios::binary);
-    
-    //if(ofs.is_open()) {
-        //lotr.serialize(ofs);
-    //}
-    
+void deserialize_and_filter() {
     ifstream ifs("ser.seri", ios::in | ios::binary);
     
     if(ifs.is_open()) {
-        FilterChain lotr2(cin, cout);
-        lotr2.deserialize(ifs);
+        FilterChain lotr(cin, cout);
+        lotr.deserialize(ifs);
     
-        lotr2.filter();
+        lotr.filter();
     }
     
-    
-
-    return 0;
+    ifs.close();   
 }

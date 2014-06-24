@@ -46,7 +46,7 @@ void FilterChain::process(ostream &out) {
 
 			if(line.empty()) break;
 		}
-
+		
 		if(!line.empty()) out << line << endl;
 	}
 }
@@ -95,14 +95,6 @@ int FilterChain::deserialize(ifstream &input) {
         }
         filters.push_back(filter);
     }
-    
-    for (int e = 0; e < filters.size(); e++) {
-        WordFilter* wf = dynamic_cast<WordFilter*>(filters[e]);
-        std::cerr << *wf << std::endl;
-    }
-    std::cerr << filters.size() << std::endl;
-    
-    
     
 	return -1;
 }
