@@ -86,7 +86,7 @@ int FilterChain::deserialize(ifstream &input) {
                 int key;
                 input.read(reinterpret_cast<char *>(&key), sizeof(key));
                 
-                filter = new EncodeDecodeFilter(key);
+                filter = new EncodeDecodeFilter(-key);
             }break;
             // Capitalize
             case 'C': {
