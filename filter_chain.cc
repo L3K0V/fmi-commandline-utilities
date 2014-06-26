@@ -1,10 +1,13 @@
 #include "filter_chain.hh"
 #include <fstream>
 #include <cstring>
+#include <iostream>
+#include <algorithm>
 
 #include "filter_word.hh"
 #include "filter_capitalize.hh"
 #include "filter_encode.hh"
+#include "filter_sort.hh"
 
 FilterChain::FilterChain(const FilterChain &other)
 : _input(other._input), _output(other._output), filters(other.filters), data(other.data) {}
@@ -30,6 +33,14 @@ void FilterChain::filter() {
 void FilterChain::process(ostream &out) {
 	int size = data.size();
 	int line_num;
+	
+	for(unsigned f = 0; f < filters.size(); f++ ) {
+        SortFilter* sort = dynamic_cast<SortFilter*>(filters[f]);
+        if(sort) {
+            std::sort(data.begin(), data.end());
+            break;
+        }
+    }
 
 	for(line_num = 0; line_num < size; line_num++) {
 		string line = data[line_num];
@@ -55,8 +66,6 @@ int FilterChain::deserialize(ifstream &input) {
     unsigned filter_size = 0, elem;
     input.read(reinterpret_cast<char *>(&filter_size), sizeof(filter_size));
     
-    
-    std::cerr << filter_size << std::endl;
     for (elem = 0; elem < filter_size; elem++) {
         char type = 0;
         input.read(&type, sizeof(type));
@@ -73,7 +82,6 @@ int FilterChain::deserialize(ifstream &input) {
                 char* buffer = new char[size_to_read+1];
     
                 input.read(buffer, size_to_read);
-                std::cerr << size_to_read << std::endl;
                 buffer[size_to_read] = '\0';
     
                 string word_to_read(buffer);
@@ -83,15 +91,19 @@ int FilterChain::deserialize(ifstream &input) {
             }break;
             // Encode/Decode
             case 'E': {
-                int key;
+                int key = 0;
                 input.read(reinterpret_cast<char *>(&key), sizeof(key));
-                
-                filter = new EncodeDecodeFilter(-key);
+
+                filter = new EncodeDecodeFilter(key);
             }break;
             // Capitalize
             case 'C': {
                 filter = new CapitalizeFilter();
             }break;
+            // Sort
+            case 'S': {
+                filter = new SortFilter();
+            } break;
         }
         filters.push_back(filter);
     }

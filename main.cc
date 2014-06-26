@@ -3,6 +3,7 @@
 #include "filter_encode.hh"
 #include "filter.hh"
 #include "filter_chain.hh"
+#include "filter_sort.hh"
 
 #include <iostream>
 
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
             if (allArgs[f] == "--encode") {
                 *chain += new EncodeDecodeFilter();
             } else if (allArgs[f] == "--decode") {
-                *chain += new EncodeDecodeFilter(-7);
+                *chain += new EncodeDecodeFilter();
             } else if (allArgs[f] == "--sort") {
                 // TODO:
             } else if (allArgs[f] == "--zero-escape") {
@@ -51,8 +52,9 @@ int serialize_and_filter() {
    Filter* world = new WordFilter("world");
    Filter* decode = new EncodeDecodeFilter();
    Filter* capitalize = new CapitalizeFilter();
+   Filter* sort = new SortFilter();
    
-   FilterChain lotr = *hobbit | *world | *capitalize | *decode;
+   FilterChain lotr = *hobbit | *world | *capitalize | *decode | *sort;
    
    lotr.filter();
     
